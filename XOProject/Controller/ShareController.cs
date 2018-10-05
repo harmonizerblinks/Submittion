@@ -8,15 +8,24 @@ namespace XOProject.Controller
     [Route("api/Share")]
     public class ShareController : ControllerBase
     {
+
         public IShareRepository _shareRepository { get; set; }
 
         public ShareController(IShareRepository shareRepository)
         {
             _shareRepository = shareRepository;
         }
+        
+
+        [HttpGet()]
+        public async Task<IActionResult> Get()
+        {
+            var share = _shareRepository.Query().OrderBy(m => m.TimeStamp);
+            return Ok(share);
+        }
 
         [HttpGet("{symbol}")]
-        public async Task<IActionResult> Get([FromRoute]string symbol)
+        public async Task<IActionResult> GetShareBySymbol([FromRoute]string symbol)
         {
             var shares = _shareRepository.Query().Where(x => x.Symbol.Equals(symbol)).ToList();
             return Ok(shares);
@@ -29,6 +38,7 @@ namespace XOProject.Controller
             var share = await _shareRepository.Query().Where(x => x.Symbol.Equals(symbol)).FirstOrDefaultAsync();
             return Ok(share?.Rate);
         }
+        
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]HourlyShareRate value)

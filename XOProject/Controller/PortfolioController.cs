@@ -7,11 +7,20 @@ namespace XOProject.Controller
     [Route("api/Portfolio")]
     public class PortfolioController : ControllerBase
     {
+
         private IPortfolioRepository _portfolioRepository { get; set; }
 
-        public PortfolioController(IShareRepository shareRepository, ITradeRepository tradeRepository, IPortfolioRepository portfolioRepository)
+        public PortfolioController(IPortfolioRepository portfolioRepository)
         {
             _portfolioRepository = portfolioRepository;
+        }
+        
+        [HttpGet()]
+        public async Task<IActionResult> Get()
+        {
+            var portfolio = _portfolioRepository.Query();
+
+            return Ok(portfolio);
         }
 
         [HttpGet("{portFolioid}")]
@@ -21,8 +30,7 @@ namespace XOProject.Controller
             
             return Ok(portfolio);
         }
-
-
+        
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Portfolio value)
         {
