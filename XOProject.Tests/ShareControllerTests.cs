@@ -66,19 +66,6 @@ namespace XOProject.Tests
             Assert.NotNull(foundResult);
             Assert.AreEqual(200, foundResult.StatusCode);
         }
-
-        [Test]
-        public async Task Get_FetchLatestShare()
-        {
-            string symbol = "CBI";
-            var share = await _shareController.GetLatestPrice(symbol);
-
-            Assert.NotNull(share);
-
-            var foundResult = share as OkObjectResult;
-            Assert.NotNull(foundResult);
-            Assert.AreEqual(200, foundResult.StatusCode);
-        }
-
+        
     }
 }
